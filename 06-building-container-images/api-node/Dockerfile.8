@@ -1,9 +1,6 @@
 # Pin specific version for stability
 # Use slim for reduced image size
-FROM node:19.6-bullseye-slim
-
-# Set NODE_ENV
-ENV NODE_ENV production
+FROM node:19.6-bullseye-slim AS base
 
 # Specify working directory other than /
 WORKDIR /usr/src/app
@@ -12,6 +9,18 @@ WORKDIR /usr/src/app
 # dependencies (better layer caching)
 COPY package*.json ./
 
+FROM base as dev 
+RUN --mount=type=cache,target=/usr/src/app/.npm \
+  npm set cache /usr/src/app/.npm && \
+  npm install
+
+COPY . .
+CMD ["npm", "run", "dev"]
+
+FROM base as production
+
+# Set NODE_ENV
+ENV NODE_ENV production
 # Install only production dependencies
 # Use cache mount to speed up install of existing dependencies
 RUN --mount=type=cache,target=/usr/src/app/.npm \

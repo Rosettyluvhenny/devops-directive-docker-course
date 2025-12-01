@@ -1,4 +1,4 @@
-DEV_COMPOSE_FILE=docker-compose-dev.yml
+DEV_COMPOSE_FILE=docker-compose.yml
 DEBUG_COMPOSE_FILE=docker-compose-debug.yml
 TEST_COMPOSE_FILE=docker-compose-test.yml
 
@@ -7,7 +7,7 @@ TEST_COMPOSE_FILE=docker-compose-test.yml
 .PHONY: compose-build
 compose-build:
 	docker compose -f $(DEV_COMPOSE_FILE) build
-
+ 
 .PHONY: compose-up
 compose-up:
 	docker compose -f $(DEV_COMPOSE_FILE) up

@@ -14,7 +14,7 @@ compose-down:
 	docker compose -f docker-compose-prod.yml down
 
 ### DOCKER SWARM
-VM_IP?=212.2.244.152
+VM_IP?=3.26.150.14
 DOCKER_HOST:="ssh://ubuntu@${VM_IP}"
 
 .PHONY: swarm-init
@@ -23,7 +23,7 @@ swarm-init:
 
 .PHONY: swarm-deploy-stack
 swarm-deploy-stack:
-	DOCKER_HOST=${DOCKER_HOST} docker stack deploy -c docker-swarm.yml example-app
+	DOCKER_HOST=${DOCKER_HOST} docker stack deploy -c docker-swarm-prod.yml example-app
 
 .PHONY: swarm-ls
 swarm-ls:
@@ -35,8 +35,8 @@ swarm-remove-stack:
 
 .PHONY: create-secrets
 create-secrets:
-	printf "foobarbaz" | DOCKER_HOST=${DOCKER_HOST} docker secret create postgres-passwd -
-	printf "postgres://postgres:foobarbaz@db:5432/postgres" | DOCKER_HOST=${DOCKER_HOST} docker secret create database-url -
+	printf "%s" "foobarbaz" | DOCKER_HOST=${DOCKER_HOST} docker secret create postgres-passwd -
+	printf "%s" "postgres://postgres:foobarbaz@db:5432/postgres" | DOCKER_HOST=${DOCKER_HOST} docker secret create database-url -
 
 .PHONY: delete-secrets
 delete-secrets:

@@ -68,7 +68,7 @@ docker-run-all:
 		-p 8080:8080 \
 		--restart unless-stopped \
 		api-golang
-
+		
 	docker run -d \
 		--name client-react-vite \
 		--network my-network \
